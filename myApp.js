@@ -3,15 +3,33 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 //connecting to mongo cluster using URI (Uniform Resource Identifier)
-mongoose.connect(process.env.MONGO_URI,{ useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("Successfully Connected"))
+  .catch((err) => console.log("Connection Error: ", err));
 
 
+// Mongoose schema for database
+  var personSchema = new mongoose.Schema({
+      name: { type: String, required: true },
+      age: Number,
+      favoriteFoods:[String]
+    });
+  
+    //Creating model for database entries
+  var Person = mongoose.model('Person',personSchema);
 
-let Person;
+  //Creates entries for database
+const createAndSavePerson = (done) => { 
+  let newPerson=new Person({name:"New Guy",age:22,favoriteFoods:["Fries"]});
 
-const createAndSavePerson = (done) => {
-  done(null /*, data*/);
-};
+  newPerson.save(function(err,data){
+    if(err) return console.error(err);
+    done(null , data);
+
+  })
+
+  
+  };
 
 const createManyPeople = (arrayOfPeople, done) => {
   done(null /*, data*/);
