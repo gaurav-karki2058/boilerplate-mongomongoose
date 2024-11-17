@@ -24,6 +24,7 @@ const createAndSavePerson = (done) => {
 
   newPerson.save(function(err,data){
     if(err) return console.error(err);
+    console.log("1. Added data: \n",data)
     done(null , data);
 
   })  
@@ -35,19 +36,32 @@ const createAndSavePerson = (done) => {
     {name: "Robert", age: 78, favoriteFoods: ["wine"]}
   ];
   
-  var createManyPeople = function(arrayOfPeople, done) {
+  const createManyPeople = function(arrayOfPeople, done) {
     Person.create(arrayOfPeople, function (err, people) {
       if (err) return console.log(err);
+      console.log("2. Added People \n",people);
+      
       done(null, people);
     });
   };
 
+  
 const findPeopleByName = (personName, done) => {
-  done(null /*, data*/);
+  Person.find(personName,(err,retrievedData)=>{
+    if(err) return console.error(err);
+    console.log(retrievedData);
+    done(null,retrievedData);
+  })
 };
 
+//Find One uses object as first parameter and a callback function 
 const findOneByFood = (food, done) => {
-  done(null /*, data*/);
+  Person.findOne({favoriteFoods:food},(err,data)=>{
+
+    if(err) console.error(err);
+    console.log("4. Find by one: \n",data);
+    done(null , data);
+  })
 };
 
 const findPersonById = (personId, done) => {
